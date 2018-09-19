@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <title>Natural Language Translator from LushTalk</title>
+    <meta name="description" content="Natural Language Translator from LushTalk" />
+    <meta name="keywords" content="Natural Language, Translator,LushTalk" />
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+
+<style>
+td {
+	cursor:hand;
+	cursor:pointer;
+}
+	html,input{
+		font-family:Open Sans!Important;
+	}
+	.head {
+		font-family:Open Sans;
+		font-size:21px;
+		font-weight:300;
+		text-decoration:none;
+		text-align:center;
+		background:gold;
+		padding:5px;
+		width:100%;
+	}
+	.head1 {
+		font-family:Open Sans;
+		font-size:21px;
+		font-weight:300;
+		text-decoration:none;
+		text-align:center;
+		padding:5px;
+		opacity:1
+	}
+	#inData {
+		width:100%;
+		background:url(https://gaysugardaddyfinder.com/assets/images/in_bar.png);background-size:cover;
+		opacity:0.8;
+		padding:2px;
+	}
+
+	#outData{
+		
+		width:100%;
+		background:url(https://gaysugardaddyfinder.com/assets/images/out_bar.png);background-size:cover;
+		opacity:0.8;
+		padding:2px;
+	}
+	.dialer {
+		position:fixed;
+		width:100%;
+		height:100%;
+		bottom:0;
+		top:0;
+		margin:0;
+		padding:0;
+		z-index:99;
+		left:0;
+		right:0;
+		font-family:Orbitron!Important;
+
+	}
+	.scr {
+		background:url(https://lushtalk.com/img/orange.png) center center;
+		background-size:cover;
+		width:100%;
+		height:50%;
+		padding:5px;
+		margin:0;
+		text-align:center;
+		text-shadow:0px 0px 1px #fff;
+		font-size:24px;
+		border:20px solid rgba(255,255,255,1);
+		padding:5px;
+		box-shadow:inset 2px 2px 15px rgba(0,0,0,0.6);
+	}
+	.scr_frame {
+		background:none;
+		width:100%;
+		height:50%;
+		margin:0;
+		position:fixed;
+		z-index:999999;
+		left:0;
+	}
+	.voices {
+		background:#f0f0f0;
+		width:100%;
+		height:100%;
+		margin:auto;
+		position:fixed;
+		z-index:9999999;
+		left:0;
+		right:0;
+		top:0;
+	}
+	.voices_to {
+		display:none;
+		background:#f0f0f0;
+		width:100%;
+		height:100%;
+		margin:auto;
+		position:fixed;
+		z-index:9999999;
+		left:0;
+		right:0;
+		top:0;
+	}
+	.dial {
+		background:url(https://lushtalk.com/img/mon.jpg);
+		background-size:cover;
+		width:33%;
+		height:25%;
+		padding:10px;
+		margin:0;
+		text-align:center;
+		text-shadow:0px 0px 1px #fff;
+		box-shadow:inset 0px 0px 15px rgba(0,0,0,0.5);
+		font-size:24px;
+	}
+	.dial_call {
+		background:#d2ff4d;
+		background-size:cover;
+		width:33%;
+		height:25%;
+		padding:10px;
+		margin:0;
+		text-align:center;
+		text-shadow:0px 0px 1px #fff;
+		box-shadow:inset 0px 0px 15px rgba(0,0,0,0.5);
+		font-size:24px;
+	}
+	.dial_center {
+		background:url(https://lushtalk.com/img/mon.jpg);
+		background-size:cover;
+		width:34%;
+		height:25%;
+		padding:10px;
+		margin:0;
+		text-align:center;
+		text-shadow:0px 0px 1px #fff;
+		font-size:24px;
+		box-shadow:inset 0px 0px 15px rgba(0,0,0,0.5);
+	}
+</style>
+<link href="https://fonts.googleapis.com/css?family=Abel|Audiowide|Bubbler+One|Bungee+Hairline|Bungee+Outline|Codystar|Julius+Sans+One|Monoton|Orbitron|Rajdhani|Six+Caps|Syncopate|Unica+One" rel="stylesheet">
+<link href='https://gaysugardaddyfinder.com/assets/css/animate.css' rel='stylesheet' type='text/css'>
+<link href='https://txt.am/assets/css/stream.css' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+<link href="https://fonts.googleapis.com/css?family=Cute+Font|Open+Sans+Condensed:300" rel="stylesheet">
+<script src="https://gaysugardaddyfinder.com/rtc.js"></script>
+<script src="https://txt.am/webrtc/stream/js/socket.io.js"></script>
+<script src="https://txt.am/assets/js/jquery.js"></script>
+<script src="cordova.js"></script>
+<script src="https://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+<script>
+
+	var ring
+	function show_dial_out() {
+		var div=document.createElement('div')
+		div.style.cssText='width:90%;max-width:600px;position:fixed;z-index:9999999999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:90px;background:#fff;border-radius:6px;font-family:Open Sans;font-weight:300;color:#000;'
+		div.id='it'
+		div.className='www_box'
+		div.innerHTML='<table><tr><td><img src="https://gaysugardaddyfinder.com/assets/images/loading_x.gif" style="width:30px;PADDING:25px"></td><td><div> ACCESSING LOCAL VIDEO STREAM...</div></td></tr></table>'
+		document.documentElement.appendChild(div)
+	}
+	function show_ring() {
+		var div1=document.createElement('div')
+		div1.style.cssText='opacity:0.7;background:#000;width:100%;position:fixed;z-index:99999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:100%'
+		var div=document.createElement('div')
+		div.style.cssText='background:#fff;width:90%;max-width:600px;position:fixed;z-index:999999999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:90px;border-radius:8px;font-family:Open Sans;font-weight:300;color:#000;'
+		div.id='wt'
+		div.className='www_box2'
+		div.innerHTML='<table style="background:#fff;border-radius:8px"><tr><td><img src="https://gaysugardaddyfinder.com/assets/images/phone_calling.gif" style="width:100px"></td><td><div><div style="color:#333;font-size:1em">Contacting User. Please wait...</div></td></tr></table>'
+		document.documentElement.appendChild(div1)
+		document.documentElement.appendChild(div)
+	}
+
+	function sms(to_mobile) {
+		var url = 'https://txt.am/gateway/sms_new.php?to=' + to_mobile + '&from=12132140004&msg='+ getCookie('login') + '|' + getCookie('chatting_with_login') + '|' + getCookie('x_from') + '|' + getCookie('x_from_lang') + '|' + getCookie('x_to') + '|' + getCookie('x_to_lang') + '|' + '1'
+		console.log(url)
+		var request = $.ajax({
+			url: url, 
+			type: "GET",
+			cache: false,
+			success: function(msg) {
+				location.href='https://lushtalk.com/channel.html?channel=' + getCookie('login') + '&action=1'
+			}
+		})
+	}	
+	
+	function country() {
+		var url = 'https://lushtalk.com/countries.php'
+		console.log(url)
+		var request = $.ajax({
+			url: url, 
+			type: "GET",
+			cache: false,
+			success: function(msg) {
+				$('#vx').html(msg)
+			}
+		})
+	}	
+	
+	function country_to() {
+		var url = 'https://lushtalk.com/countries_to.php'
+		console.log(url)
+		var request = $.ajax({
+			url: url, 
+			type: "GET",
+			cache: false,
+			success: function(msg) {
+				$('#vx_to').html(msg)
+			}
+		})
+	}	
+	
+	function qs(name, url) {
+		if (!url) {
+		  url = window.location.href;
+		}
+		name = name.replace(/[\[\]]/g, "\\$&");
+		var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+			results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+	function getIP() {
+		$.getJSON("https://jsonip.com/?callback=?", function (data) {
+			setCookie('ip',data.ip);
+		});
+	}
+	
+	function $$(obj) {
+		return document.getElementById(obj)
+	}
+	var wl = window.location.href;
+	var mob = (window.location.href.indexOf('file://')>=0);
+
+	function setCookie(cname,cvalue)	{
+		if (window.location.href.indexOf('file://')>=0) {
+			window.localStorage.setItem(cname, cvalue);
+		} else {
+			var d = new Date(); 
+			d.setTime(d.getTime()+(1*24*60*60*1000)); 
+			var expires = "expires="+d.toGMTString(); 
+			document.cookie = cname + "=" + cvalue + "; " + expires; 
+		}
+	} 
+
+	function getCookie(cname)	{ 
+		if (window.location.href.indexOf('file://')>=0) {
+			var cvalue = window.localStorage.getItem(cname);
+			return cvalue
+		} else {
+			var name = cname + "="; 
+			var ca = document.cookie.split(';'); 
+			for(var i=0; i<ca.length; i++) { 
+			  var c = ca[i].trim(); 
+			  if (c.indexOf(name)==0) return c.substring(name.length,c.length); 
+			} 
+			return ""; 
+		}
+	} 
+	var volumeControl
+	var app = {
+		initialize: function() {
+			document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+		},
+		onDeviceReady: function() {
+			
+		},
+	};
+
+	app.initialize();
+	function validate_mobiles() {
+		if ((!getCookie('mobile') || getCookie('mobile')=='null') && !qs('mobile')) {
+			$.confirm({
+			title: 'Missing Mobile!',
+			content: '' +
+				'<form action="" class="formName">' +
+				'<div class="form-group">' +
+				'<label>Please enter mobile number below</label>' +
+				'<input id="mob" type="text" style="font-family:Open Sans!Important;height:50px;box-shadow:inset 1px 1px 5px rgba(0,0,0,0.4);border-radius:10px;padding:10px;width:80%;margin:10px;background:#f0f0f0;border:none" placeholder="Your Mobile Number"/>' +
+				'</div>' +
+				'</form>',
+				buttons: {
+					formSubmit: {
+						text: '<span style="font-family:Open Sans"> PROCEED </span>',
+						btnClass: 'btn-red',
+						action: function () {
+							var mb = this.$content.find('#mob').val();
+							if(!mb){
+								$.alert('provide a valid Mobile Number');
+								return false;
+							}
+							setCookie('mobile',mb)
+							setCookie('login',mb)
+						}
+					},
+				},
+				onContentReady: function () {
+					// bind to events
+					var jc = this;
+					this.$content.find('form').on('submit', function (e) {
+						// if the user submits the form by pressing enter in the field.
+						e.preventDefault();
+						jc.$$formSubmit.trigger('click'); // reference the button and click it
+					});
+				}
+			});
+		}
+	}
+	var phone=''
+	var elms=[]
+	var digits=[]
+
+	function handle(obj,ctr) {
+		$$('ht').style.display='none'
+		if (phone.length==11) {
+			return false
+		}
+		num=ctr
+		if (ctr==11) num='0'
+		if (ctr==10 || ctr==12) return
+		obj.style.transform='scale(1.2)'
+		obj.style.opacity=op
+		restor(obj,ctr)
+		var elm=document.createElement('span')
+		elm.innerHTML='<img src="https://lushtalk.com/img/'+num+'.png" style="margin:2px;opacity:0.7;width:20px">'
+		elms.push(elm)
+		digits.push(num)
+		$('#n1').append(elm)
+		phone=phone+num+''
+		console.log(num)
+		console.log(phone)
+		//if (digits.length==11) location.href='channel.html?login=' + getCookie('login') + '&action=1'
+	}
+
+	var r=[]
+	var x=1.3
+	var op=0.1
+	var num
+
+	for (var i=1;i<=12;i++) {
+		r[i]=x
+	}
+
+	var tmr=[]
+	var ctr=0
+	var x_elms=[]
+	var x_digits=[]
+	
+	function back() {
+		$('#n1').html('')
+		elms.pop()
+		for (var i=0;i<elms.length;i++) {
+			$('#n1').append(elms[i])
+		}
+		console.log(elms)
+		phone=''
+		digits.pop()
+		for (var i=0;i<digits.length;i++) {
+			phone=phone+digits[i]+''
+		}
+	}
+
+	function restor(obj,ctr) {
+		if (r[ctr]>1) {
+			r[ctr]=r[ctr]*1-0.005
+			obj.style.transform='scale('+r[ctr]+')'
+			obj.style.opacity=obj.style.opacity*1+0.01
+			tmr[ctr]=setTimeout(function(){
+				restor(obj,ctr)
+			}, 1)
+		} else {
+			clearTimeout(tmr[ctr])
+			r[ctr]=x
+			obj.style.transform='scale(1)'
+			obj.style.opacity='1'
+			document.body.style.background='#0080AA'
+		}	
+	}
+
+	function go() {
+		setCookie('chatting_with_login',phone)
+		sms(phone)
+	}
+	
+	function selVoice(a,b,c,d) {
+		setCookie('x_from',b)
+		setCookie('x_from_lang',c)
+		$$('vx').style.display='none'
+		$$('vx_to').style.display='block'
+		country_to()
+	}
+	function selVoiceTo(a,b,c,d) {
+		setCookie('x_to',b)
+		setCookie('x_to_lang',c)
+		$$('vx_to').style.display='none'
+		$('#d_frame').show()
+		validate_mobiles()		
+	}
+
+	if (qs('init')=='1') {
+		setCookie('x_to',qs('xt'))
+		setCookie('x_to_lang',qs('xtl'))
+		setCookie('x_from',qs('xf'))
+		setCookie('x_from_lang',qs('xfl'))
+		setCookie('login',qs('to'))
+		setCookie('chatting_with_login',qs('fr'))
+		location.href='https://lushtalk.com/channel.html?channel=' + qs('to')+'&init=1'
+	} else {
+		setTimeout('country()',1)
+	}
+</script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script></body>
+	<body style="background:#0080AA">
+		<div id="d_frame" style="display:none">
+			<div class="scr_frame">
+				<div id="ht" style="margin-top:-10px;padding:30px;color:#fff;font-family:unica one;font-size:1.5em">
+					<h3 style="color:#000;text-shadow:1px 0px 1px #fff;font-family:unica one">Connect with any person on planet Earth with a valid mobile number.</h3>
+					<h5 style="font-size:1.1em;color:#fff;font-family:rajdhani">To connect, simply dial it below
+					<br><div style="font-size:0.7em;color:#000;font-family:rajdhani;text-shadow:1px 0px 1px #fff">Your HD video call, in one of many languages auto translated in a natural human voice to match your language of choice, will commence as soon as the person you dialed, responds.</div>
+				</div>
+				</div>
+			<table class="dialer">
+				<tr style="height:50%">
+					<td class="scr" style="width:100%">
+						<div id="n1" style="width:100%;height:100px;top:15%"></div>
+						<div style="width:100%;position:absolute;bottom:52%;margin:0;padding:0">
+						</div>
+					</td>
+				</tr>
+				<tr style="height:50%">
+					<td style="height:100%">
+						<table style="height:100%;width:100%">
+							<tr>
+								<td onclick="handle(this,1)" class="dial ">1</td>
+								<td onclick="handle(this,2)" class="dial ">2</td>
+								<td onclick="handle(this,3)" class="dial ">3</td>
+							</tr>
+							<tr>
+								<td onclick="handle(this,4)" class="dial ">4</td>
+								<td onclick="handle(this,5)" class="dial_center ">5</td> 
+								<td onclick="handle(this,6)" class="dial ">6</td>
+							</tr>
+							<tr>
+								<td onclick="handle(this,7)" class="dial">7</td>
+								<td onclick="handle(this,8)" class="dial_center">8</td>
+								<td onclick="handle(this,9)" class="dial">9</td> 
+							</tr>
+							<tr>
+								<td onclick="handle(this,10);back()" class="dial">BACK</td>
+								<td onclick="handle(this,11)" class="dial_center">0</td>
+								<td onclick="handle(this,12);go()" class="dial_call">CALL</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="vx" class="voices" style="overflow:auto"></div>
+		<div id="vx_to" class="voices_to" style="overflow:auto"></div>
+	</body>
+</html>

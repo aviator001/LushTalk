@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <title>Natural Language Translator from LushTalk</title>
+    <meta name="description" content="Natural Language Translator from LushTalk" />
+    <meta name="keywords" content="Natural Language, Translator,LushTalk" />
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+<style>
+.head {
+	font-family:Open Sans;
+	font-size:21px;
+	font-weight:300;
+	text-decoration:none;
+	text-align:center;
+	background:gold;
+	padding:5px;
+	width:100%;
+}
+.head1 {
+	font-family:Open Sans;
+	font-size:21px;
+	font-weight:300;
+	text-decoration:none;
+	text-align:center;
+	padding:5px;
+	opacity:1
+}
+
+#outData{
+	
+	width:100%;
+	background:url(https://gaysugardaddyfinder.com/assets/images/out_bar.png);background-size:cover;
+	opacity:0.8;
+	padding:2px;
+}
+</style>
+<link href="https://fonts.googleapis.com/css?family=Abel|Audiowide|Bubbler+One|Bungee+Hairline|Bungee+Outline|Codystar|Julius+Sans+One|Monoton|Orbitron|Rajdhani|Six+Caps|Syncopate|Unica+One" rel="stylesheet">
+<body style="background:url(https://gaysugardaddyfinder.com/assets/images/tv2.gif) repeat">
+<link href='https://gaysugardaddyfinder.com/assets/css/animate.css' rel='stylesheet' type='text/css'>
+<link href='https://txt.am/assets/css/shadows.css' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+<br><br><br><div id="videos-container" style="position:fixed;top:50%;left:0;right:0;height:50%;"></div>
+<div id="h_1" style="display:;position:absolute;z-index:999999999999999999999;width:100%;top:10px;left:0px;height:40px;color:#000;font-family:Open Sans Condensed;padding:5px" class="head1">
+	<div id="outData" style="width:95%;border:10px solid white;font-family:rajdhani;color:#666;padding:10px;opacity:1!Important;box-shadow:inset 0 0 25px rgba(0,0,0,0.8);z-index:99900;position:fixed;top:35%;left:0;right:0;height:15%;margin-top:20px;background:url(https://lushtalk.com/img/lcd_screen.png);background-size:cover"></div>
+	<div id="" style="border:10px solid white;opacity:1!Important;box-shadow:inset 0 0 25px rgba(0,0,0,0.8);padding:10px;z-index:99900;position:fixed;top:35%;left:0;right:0;height:15%;background:none;margin-top:20px"></div>
+	<div id="inData" style="font-family:audiowide;color:white;padding:20px;z-index:1000;position:fixed;left:0;right:0;top:0;bottom:0;height:35%;background:url(https://lushtalk.com/img/orange.png);background-size:cover">
+		<div style="position:absolute;width:100%;height:100%;bottom:5px;right:5px;top:5px;left:5px;padding:40px;background:lightyellow;font-family:rajdhani;text-align:left;font-size:0.8em;color:#000;text-shadow: 1px 0 1px #fff;opacity:0.8">
+			<b>STRONGLY RECOMMENDED:</b><br><br>
+			1. Please speak in <span id=""></span> Only!<br>
+			2. Remember: Only 1 person can speak at a time<br>
+			3. Dont forget: Pause after each sentence!<br>
+			4. Good internet connection is a must<br> 
+			5. <b>Always use hands free ear buds</b><br>
+			6. Never use 2 translator devices in same room<br>
+			7. Alpha release - be patient!<br>
+		</div>
+	</div>
+	<div id="" style="z-index:9999990;box-shadow:inset 0 0 25px rgba(0,0,0,0.8);z-index:1001;border:10px solid white;position:fixed;top:0;left:0;right:0;height:35%;padding:10px;background:none;"></div>
+	<div id="" style="z-index:990;opacity:0.2;position:fixed;width:100%;left:0;right:0;height:32%;background:url(https://lushtalk.com/img/trans.png);background-size:cover"></div>
+	<div id="" style="z-index:990;opacity:1;position:fixed;width:100%;left:0;right:0;height:75px;bottom:0;background:url(https://lushtalk.com/img/dull.png);background-size:cover"></div>
+
+</div>
+<div style=";margin:auto;position:absolute;left:0;right:0;top:0;bottom:0;">
+	<img style="width:223px;height:60px;opacity:0;" src="https://txt.am/assets/img/panel.png">
+</div>
+<link href="https://fonts.googleapis.com/css?family=Cute+Font|Open+Sans+Condensed:300" rel="stylesheet">
+<img src="https://lushtalk.com/img/set.png" style="position:absolute;z-index:999999999999999999;width:60px;bottom:10px;left:10px">
+<img src="https://lushtalk.com/img/rec.png" onclick="startRec()" id="btn_rec" style="position:absolute;z-index:999999999999999999;width:60px;bottom:10px;right:0px;left:0;margin:auto">
+<img onclick="javascript:location.href='home.html'" src="https://lushtalk.com/img/exit.png" id="btn_ppl" style="cursor:hand;cursor:pointer;position:absolute;z-index:999999999999999999;width:60px;bottom:5px;right:10px">
+<img  src="https://gaysugardaddyfinder.com/assets/images/wait.gif" id="img_wait" style="position:absolute;z-index:999999999999999999999;width:160px;bottom:0px;right:0px;left:0;top:0;margin:auto">
+<script src="https://txt.am/assets/js/jquery.js"></script>
+<script src="https://gaysugardaddyfinder.com/rtc.js"></script>
+<script src="https://txt.am/webrtc/stream/js/socket.io.js"></script>
+<script src="jsSocketNode.js"></script>
+<script src="translator.js"></script>
+<script src="https://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
+
+<script>
+var audiox
+var plid
+var localStream
+var remoteStream
+var recorder
+var mRecordRTC = new MRecordRTC();
+var text=''
+var translator
+var x_from=getCookie('x_from').split('-')[0]
+var x_to=getCookie('x_to').split('-')[0]
+var msgOutQ=[]
+var out_flow=false
+var last_msg_out=''
+var inm=[]
+var out=[]
+var out_animate=true
+
+var toUser=getCookie('chatting_with_login')
+var fromUser=getCookie('login')
+
+function translateVoice() {
+	translator = new Translator();
+	translator.voiceToText(function(text) {
+	var config = {
+		from: x_from,
+		to: x_to,
+		api_key: 'AIzaSyDz8PDl7GuVei6VnCDLYJOO4i6dca-ZrmQ', // use your own key
+		callback: function (translatedText) {
+			console.log('translated text', translatedText);
+			var vmsg={		'type':	'VT',
+							'fromUser': fromUser,
+							'toUser': toUser,
+							'msg':	translatedText+'|'+x_from
+					}
+			objData={'msg' : vmsg}
+			jMsg=JSON.stringify({'type':'VT','data': objData})
+			console.log(jMsg)
+			if (socket.readyState==1) {
+				try {
+					if ((last_msg_out !== translatedText)||(last_msg_out=='')) {
+						socket.send(jMsg)
+						outgoing(text)
+						msgOutQ.push(text)
+						last_msg_out=translatedText
+					}
+				}
+				catch (e){
+					console.log('Error')
+				}
+			}       
+		}
+	};
+	translator.translateLanguage(text, config);
+		<!-- translator.translateLanguage(text, { -->
+			<!-- from: x_from, -->
+			<!-- to: x_to, -->
+			<!-- callback: function(translatedText) { -->
+				<!-- console.log(translatedText); -->
+					<!-- translator.speakTextUsingGoogleSpeaker({ -->
+						<!-- textToSpeak: translatedText, -->
+						<!-- targetLanguage: x_to, -->
+						<!-- api_key: 'AIzaSyDpjv9el4U3PePPCLd4w2oLokrKOLhxWhM' -->
+					<!-- }); -->
+				<!-- } -->
+			<!-- }); -->
+		}, x_from);
+	}
+	
+	function outgoing(txt2) {
+		if ($$('outData').innerHTML.length>100) {
+			$$('outData').className='animated bounceOutLeft'
+			$$('outData').className='animated bounceInRight'
+			$$('outData').innerHTML=txt2
+		} else {
+			$$('outData').innerHTML=$$('outData').innerHTML+txt2+". "
+		}
+	}
+	
+			
+function startRec() {
+		if ($$('btn_rec').src=='https://gaysugardaddyfinder.com/assets/images/btn_on.png') {
+			$$('btn_rec').src='https://gaysugardaddyfinder.com/assets/images/btn_rec.png'
+			stopRec()
+			$$('img_wait').style.display=''
+			status('Saving video, please wait')
+		} else {
+			if (remoteStream) stream=remoteStream
+				else stream=localStream
+			recordAudio = RecordRTC(stream, {
+				type: 'audio',
+				recorderType: StereoAudioRecorder,
+				// bufferSize: 16384,
+				onAudioProcessStarted: function() {
+					recordVideo.startRecording();
+				}
+			});
+			var videoOnlyStream = new MediaStream();
+			videoOnlyStream.addTrack(stream.getVideoTracks()[0]);
+			recordVideo = RecordRTC(videoOnlyStream, {
+				type: 'video',
+				// recorderType: MediaStreamRecorder || WhammyRecorder
+			});
+			recordAudio.startRecording();
+			status('Recording in progress...')
+			$$('btn_rec').src='https://gaysugardaddyfinder.com/assets/images/btn_on.png'
+		}
+}
+function stopRec() {
+    fileName = Math.round(Math.random() * 99999999) + 99999999;
+    recordAudio.stopRecording(function() {
+        recordVideo.stopRecording(function() {
+            PostBlob(recordAudio.getBlob(), recordVideo.getBlob(), fileName);
+        });
+    });
+}
+function PostBlob(audioBlob, videoBlob, fileName) {
+    var formData = new FormData();
+    formData.append('filename', fileName);
+    formData.append('audio-blob', audioBlob);
+    formData.append('video-blob', videoBlob);
+    xhr('http://gaysugardaddyfinder.com/blogx.php', formData, function(ffmpeg_output) {
+		$$('img_wait').style.display='none'
+		status("<a class='head' download target='_BLANK' type='application/octet-stream' href='http://gaysugardaddyfinder.com/vids/"+fileName+".mp4'>Download Video Here</a>");
+    });
+}
+function status(txt) {
+	<!-- document.getElementById('h_1').innerHTML=txt -->
+}
+function status_hide() {
+	<!-- setTimeout(function(){ -->
+		<!-- document.getElementById('h_1').className="magictime magic" -->
+		<!-- setTimeout(function(){ -->
+			<!-- document.getElementById('h_1').className="head1" -->
+			<!-- document.getElementById('h_1').innerHTML='' -->
+		<!-- },1000) -->
+	<!-- },3000) -->
+}
+function xhr(url, data, callback) {
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function() {
+        if (request.readyState == 4 && request.status == 200) {
+            callback(request.responseText);
+        }
+    };
+    request.open('POST', url);
+    request.send(data);
+}
+status('Accessing Local Stream')
+setTimeout(function(){
+	<!-- if (getCookie('login')=='') location.href='index.html' --> 
+	var roomid = '';
+	if (localStorage.getItem('channel')) {
+		roomid = localStorage.getItem('channel');
+	} else {
+		roomid = connection.token();
+	}
+	localStorage.setItem('channel', qs('channel'));
+	setCookie('channel',qs('channel'))
+	$('#it').hide()
+	//$('#wt').show()
+	if (qs('action')) {
+		if (qs('channel')) {
+			connection.open(qs('channel'))
+		} else {
+			connection.open(localStorage.getItem('channel'))
+		}
+	} else {
+		if (qs('channel')) {
+			connection.join(qs('channel'))
+		} else {
+			connection.join(localStorage.getItem('channel'))
+		}
+		$('#wt').hide()
+	}
+},2000)
+
+var connection = new RTCMultiConnection();
+var localID
+connection.autoCloseEntireSession = true;
+connection.socketURL = 'https://txt.am:9001/';
+
+connection.session = {
+    audio: true,
+    video: true
+};
+connection.sdpConstraints.mandatory = {
+    OfferToReceiveAudio: true,
+    OfferToReceiveVideo: true
+};
+
+if (qs('init')=='1') {
+	show_dial_out()
+	$('#wt').hide()
+}
+if (qs('action')=='1') show_ringer()
+
+connection.videosContainer = document.getElementById('videos-container');
+connection.onstream = function(event) {
+    if(event.type === 'local') {
+		$$('img_wait').style.display='none'
+		status('Connected. Waiting for Calls...')
+		localStream=event.stream
+		event.mediaElement.id = event.userid;
+		connection.videosContainer.appendChild(event.mediaElement);
+		event.mediaElement.style.cssText='position:absolute;top:0px;left:0;width:100%;height:100%;object-fit:cover'
+		event.mediaElement.play();
+		setTimeout(function() {
+			event.mediaElement.autoplay=true
+			event.mediaElement.play();
+			$('#'+event.mediaElement.id).click()
+		}, 3000);	}
+    if(event.type === 'remote') {
+		remoteStream=event.stream
+		$('#wt').hide()
+        connection.videosContainer.innerHTML=''
+		connection.receiveFirstRemoteStream = true;
+		event.mediaElement.id = event.userid;
+		event.mediaElement.style.cssText='position:absolute;top:0px;left:0;width:100%;height:100%;object-fit:cover'
+		connection.videosContainer.appendChild(event.mediaElement);
+		event.mediaElement.play();
+		setTimeout(function() {
+			event.mediaElement.autoplay=true
+			event.mediaElement.play();
+			$('#'+event.mediaElement.id).click()
+			end_ringer()
+		}, 3000);
+    }
+};
+
+	function sound(src) {
+	}
+	connection.onstreamended = connection.onleave = connection.onclose = function(event) {
+		var video = document.getElementById(event.userid);
+		if (!video) return;
+		video.parentNode.removeChild(video);
+		remoteStream=null
+		history.go(-1)
+	};
+
+	(function keepCheckingForRoom() {
+    if(!connection.receiveFirstRemoteStream) {
+        setTimeout(keepCheckingForRoom, 3000);
+        return;
+    }
+
+    connection.checkPresence(connection.sessionid, function(isRoomExist, roomid) {
+        if(connection.isInitiator) {
+            return;
+        }
+
+        if(connection.peers[connection.sessionid]) {
+            setTimeout(keepCheckingForRoom, 3000);
+            return;
+        }
+        if (isRoomExist === true) {
+            connection.join(roomid);
+            setTimeout(keepCheckingForRoom, 3000);
+            return;
+        }
+        setTimeout(keepCheckingForRoom, 3000);
+    });
+	})();
+	var ring
+	function show_dial_out() {
+		var div=document.createElement('div')
+		div.style.cssText='display:none;width:90%;max-width:600px;position:absolute;margin:auto;left:0;right:0;top:0;bottom:0;height:90px;background:#fff;border-radius:6px;font-family:Open Sans;font-weight:300;color:#000;'
+		div.id='wt'
+		div.className='www_box'
+		div.innerHTML='<table><tr><td><img src="https://gaysugardaddyfinder.com/assets/images/phone_calling.gif" style="width:100px"></td><td><div>CALLING ...</div><div style="color:silver;font-size:0.8em">Attempting contact via SMS, Voice Call & Email.</div></td></tr></table>'
+		document.documentElement.appendChild(div)
+		var div=document.createElement('div')
+		div.style.cssText='width:90%;max-width:600px;position:absolute;margin:auto;left:0;right:0;top:0;bottom:0;height:90px;background:#fff;border-radius:6px;font-family:Open Sans;font-weight:300;color:#000;'
+		div.id='it'
+		div.className='www_box'
+		div.innerHTML='<table><tr><td><img src="https://gaysugardaddyfinder.com/assets/images/loading_x.gif" style="width:30px;PADDING:25px"></td><td><div> ACCESSING LOCAL VIDEO STREAM...</div></td></tr></table>'
+		document.documentElement.appendChild(div)
+	}
+
+	function sms(mobile,to_mobile) {
+		var url = 'https://txt.am/gateway/sms.php?to=' + to_mobile + '&from='+getCookie('long_code')+'&msg=https://gaysugardaddyfinder.com/video&login='+to_mobile+'&to2='+mobile+'&to3=has invited you to a Video Chat. Click below to join the call.'
+		console.log(url)
+		var request = $.ajax({
+			url: url, 
+			type: "GET",
+			dataType: "jsonp",
+			cache: false,
+			success: function(msg) {
+				
+			}
+		})
+	}	
+	
+	function qs(name, url) {
+		if (!url) {
+		  url = window.location.href;
+		}
+		name = name.replace(/[\[\]]/g, "\\$&");
+		var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+			results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+
+	function getIP() {
+		$.getJSON("https://jsonip.com/?callback=?", function (data) {
+			setCookie('ip',data.ip);
+		});
+	}
+	
+	function $$(obj) {
+		return document.getElementById(obj)
+	}
+	var wl = window.location.href;
+	var mob = (window.location.href.indexOf('file://')>=0);
+
+	function setCookie(cname,cvalue)	{
+		if (window.location.href.indexOf('file://')>=0) {
+			window.localStorage.setItem(cname, cvalue);
+		} else {
+			var d = new Date(); 
+			d.setTime(d.getTime()+(1*24*60*60*1000)); 
+			var expires = "expires="+d.toGMTString(); 
+			document.cookie = cname + "=" + cvalue + "; " + expires; 
+		}
+	} 
+
+	function getCookie(cname)	{ 
+		if (window.location.href.indexOf('file://')>=0) {
+			var cvalue = window.localStorage.getItem(cname);
+			return cvalue
+		} else {
+			var name = cname + "="; 
+			var ca = document.cookie.split(';'); 
+			for(var i=0; i<ca.length; i++) { 
+			  var c = ca[i].trim(); 
+			  if (c.indexOf(name)==0) return c.substring(name.length,c.length); 
+			} 
+			return ""; 
+		}
+	} 
+	function end_ringer() {
+		$('#oc').hide()
+		$('#wt').hide()
+		audiox.pause()
+	}
+	function show_ringer() {
+		audiox = document.createElement('audio');
+		audiox.src = 'ring.mp3';
+		audiox.play();
+		<!-- audiox.onended = function() { -->
+			<!-- audiox = document.createElement('audio'); -->
+			<!-- audiox.src = 'ring.mp3'; -->
+			<!-- audiox.play(); -->
+		<!-- };		 -->
+		var div1=document.createElement('div')
+		div1.style.cssText='opacity:0.7;background:#000;width:100%;position:fixed;z-index:99999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:100%'
+		div1.id='oc'
+		var div=document.createElement('div')
+		div.style.cssText='background:#fff;width:90%;max-width:600px;position:fixed;z-index:999999999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:90px;border-radius:8px;font-family:Open Sans;font-weight:300;color:#000;'
+		div.id='wt'
+		div.className='www_box2'
+		div.innerHTML='<table style="background:#fff;border-radius:8px"><tr><td><img src="https://gaysugardaddyfinder.com/assets/images/phone_calling.gif" style="width:100px"></td><td><div><div style="color:#333;font-size:1em">Contacting User. Please wait...</div></td></tr></table>'
+		document.documentElement.appendChild(div1)
+		document.documentElement.appendChild(div)
+	}
+	setTimeout('translateVoice()',1)
+	</script>
+</body>
+</html>
