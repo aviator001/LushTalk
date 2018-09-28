@@ -69,17 +69,22 @@
 	<img style="width:223px;height:60px;opacity:0;" src="https://txt.am/assets/img/panel.png">
 </div>
 <link href="https://fonts.googleapis.com/css?family=Cute+Font|Open+Sans+Condensed:300" rel="stylesheet">
-<img src="https://lushtalk.com/img/set.png" style="position:absolute;z-index:999999999999999999;width:60px;bottom:10px;left:10px">
-<img src="https://lushtalk.com/img/rec.png" onclick="startRec()" id="btn_rec" style="position:absolute;z-index:999999999999999999;width:60px;bottom:10px;right:0px;left:0;margin:auto">
-<img onclick="javascript:location.href='home.html'" src="https://lushtalk.com/img/exit.png" id="btn_ppl" style="cursor:hand;cursor:pointer;position:absolute;z-index:999999999999999999;width:60px;bottom:5px;right:10px">
+<img src="img/back.png" style="position:absolute;z-index:999999999999999999;width:60px;bottom:10px;left:0px">
+<!-- <img src="img/settings.png" style="position:absolute;z-index:999999999999999999;width:60px;bottom:10px;left:25%;margin:auto"> -->
+<!-- <img src="img/help.png" style="position:absolute;z-index:999999999999999999;width:60px;bottom:10px;right:25%;margin:auto"> -->
+<!-- <img src="img/redial.png" style="position:absolute;z-index:999999999999999999;width:60px;bottom:10px;right:0px;left:0;margin:auto"> -->
+<img src="img/exit.png" style="position:absolute;z-index:999999999999999999;width:60px;bottom:10px;right:0px">
+
 <img  src="https://gaysugardaddyfinder.com/assets/images/wait.gif" id="img_wait" style="position:absolute;z-index:999999999999999999999;width:160px;bottom:0px;right:0px;left:0;top:0;margin:auto">
+<!-- <img src="https://lushtalk.com/img/settings.png" onclick="startRec()" id="btn_rec" style="position:absolute;z-index:999999999999999999;width:60px;bottom:10px;right:0px;left:0;margin:auto"> -->
+
 <script src="https://txt.am/assets/js/jquery.js"></script>
-<script src="https://gaysugardaddyfinder.com/rtc.js"></script>
 <script src="https://txt.am/webrtc/stream/js/socket.io.js"></script>
+<script src="cordova.js"></script>
+<script src="rtc.js"></script>
 <script src="jsSocketNode.js"></script>
 <script src="translator.js"></script>
 <script src="https://cdn.WebRTC-Experiment.com/RecordRTC.js"></script>
-
 <script>
 var audiox
 var plid
@@ -113,19 +118,16 @@ function translateVoice() {
 			var vmsg={		'type':	'VT',
 							'fromUser': fromUser,
 							'toUser': toUser,
-							'msg':	translatedText+'|'+x_from
+							'msg':	translatedText + '|' + x_from
 					}
 			objData={'msg' : vmsg}
 			jMsg=JSON.stringify({'type':'VT','data': objData})
 			console.log(jMsg)
 			if (socket.readyState==1) {
 				try {
-					if ((last_msg_out !== translatedText)||(last_msg_out=='')) {
-						socket.send(jMsg)
-						outgoing(text)
-						msgOutQ.push(text)
-						last_msg_out=translatedText
-					}
+					socket.send(jMsg)
+					outgoing(text)
+					last_msg_out=translatedText
 				}
 				catch (e){
 					console.log('Error')
@@ -151,8 +153,6 @@ function translateVoice() {
 	
 	function outgoing(txt2) {
 		if ($$('outData').innerHTML.length>100) {
-			$$('outData').className='animated bounceOutLeft'
-			$$('outData').className='animated bounceInRight'
 			$$('outData').innerHTML=txt2
 		} else {
 			$$('outData').innerHTML=$$('outData').innerHTML+txt2+". "
@@ -228,57 +228,23 @@ function xhr(url, data, callback) {
     request.open('POST', url);
     request.send(data);
 }
-status('Accessing Local Stream')
-setTimeout(function(){
-	<!-- if (getCookie('login')=='') location.href='index.html' --> 
-	var roomid = '';
-	if (localStorage.getItem('channel')) {
-		roomid = localStorage.getItem('channel');
-	} else {
-		roomid = connection.token();
-	}
-	localStorage.setItem('channel', qs('channel'));
-	setCookie('channel',qs('channel'))
-	$('#it').hide()
-	//$('#wt').show()
-	if (qs('action')) {
-		if (qs('channel')) {
-			connection.open(qs('channel'))
-		} else {
-			connection.open(localStorage.getItem('channel'))
-		}
-	} else {
-		if (qs('channel')) {
-			connection.join(qs('channel'))
-		} else {
-			connection.join(localStorage.getItem('channel'))
-		}
-		$('#wt').hide()
-	}
-},2000)
 
-var connection = new RTCMultiConnection();
-var localID
-connection.autoCloseEntireSession = true;
-connection.socketURL = 'https://txt.am:9001/';
+	var connection = new RTCMultiConnection();
+	var localID
+	connection.autoCloseEntireSession = true;
+	connection.socketURL = 'https://txt.am:9001/';
 
-connection.session = {
-    audio: true,
-    video: true
-};
-connection.sdpConstraints.mandatory = {
-    OfferToReceiveAudio: true,
-    OfferToReceiveVideo: true
-};
+	connection.session = {
+		audio: true,
+		video: true
+	};
+	connection.sdpConstraints.mandatory = {
+		OfferToReceiveAudio: true,
+		OfferToReceiveVideo: true
+	};
 
-if (qs('init')=='1') {
-	show_dial_out()
-	$('#wt').hide()
-}
-if (qs('action')=='1') show_ringer()
-
-connection.videosContainer = document.getElementById('videos-container');
-connection.onstream = function(event) {
+	connection.videosContainer = document.getElementById('videos-container');
+	connection.onstream = function(event) {
     if(event.type === 'local') {
 		$$('img_wait').style.display='none'
 		status('Connected. Waiting for Calls...')
@@ -344,6 +310,38 @@ connection.onstream = function(event) {
     });
 	})();
 	var ring
+
+
+	if (qs('init')=='1') {
+		show_dial_out()
+		$('#wt').hide()
+	}
+	if (qs('action')=='1') show_connect()
+
+
+	function connectV() {
+		setCookie('channel',qs('channel'))
+		roomid=qs('channel')
+		$('#it').hide()
+		if (qs('action')) {
+			if (qs('channel')) {
+				connection.open(qs('channels'))
+			} else {
+				connection.open(localStorage.getItem('channel'))
+			}
+		} else {
+			if (qs('channel')) {
+				connection.join(qs('channel'))
+			} else {
+				connection.join(localStorage.getItem('channel'))
+			}
+			$('#wt').hide()
+		}
+		hide_connect()
+		show_ringer()	
+	}
+	
+	
 	function show_dial_out() {
 		var div=document.createElement('div')
 		div.style.cssText='display:none;width:90%;max-width:600px;position:absolute;margin:auto;left:0;right:0;top:0;bottom:0;height:90px;background:#fff;border-radius:6px;font-family:Open Sans;font-weight:300;color:#000;'
@@ -427,26 +425,40 @@ connection.onstream = function(event) {
 		$('#wt').hide()
 		audiox.pause()
 	}
-	function show_ringer() {
-		audiox = document.createElement('audio');
-		audiox.src = 'ring.mp3';
-		audiox.play();
-		<!-- audiox.onended = function() { -->
-			<!-- audiox = document.createElement('audio'); -->
-			<!-- audiox.src = 'ring.mp3'; -->
-			<!-- audiox.play(); -->
-		<!-- };		 -->
+
+		function show_ringer() {
+			audiox = document.createElement('audio');
+			audiox.src = 'ring_back.mp3';
+			audiox.play();
+			var div1=document.createElement('div')
+			div1.style.cssText='opacity:0.7;background:#000;width:100%;position:fixed;z-index:99999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:100%'
+			div1.id='oc'
+			var div=document.createElement('div')
+			div.style.cssText='background:#fff;width:90%;max-width:600px;position:fixed;z-index:999999999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:90px;border-radius:8px;font-family:Open Sans;font-weight:300;color:#000;'
+			div.id='wt'
+			div.className='www_box2'
+			div.innerHTML='<table style="background:#fff;border-radius:8px"><tr><td><img src="https://gaysugardaddyfinder.com/assets/images/phone_calling.gif" style="width:130px"></td><td><div><div style="color:#333;font-size:1em">Calling User. Please Wait...</div></td><td style="text-align:center"><a href="javascript:end_ringer()"><img src="img/exit2.png" style="margin:30px;width:40px;border-radius:5px"></td></tr></table>'
+			document.documentElement.appendChild(div1)
+			document.documentElement.appendChild(div)
+		}
+	function show_connect() {
 		var div1=document.createElement('div')
-		div1.style.cssText='opacity:0.7;background:#000;width:100%;position:fixed;z-index:99999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:100%'
-		div1.id='oc'
+		div1.style.cssText='opacity:1;background:url(img/silver.png);width:100%;position:fixed;z-index:99999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:100%'
+		div1.id='cc'
 		var div=document.createElement('div')
-		div.style.cssText='background:#fff;width:90%;max-width:600px;position:fixed;z-index:999999999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:90px;border-radius:8px;font-family:Open Sans;font-weight:300;color:#000;'
-		div.id='wt'
+		div.style.cssText='background:#fff;width:80%;max-width:600px;position:fixed;z-index:999999999999999;margin:auto;left:0;right:0;top:0;bottom:0;height:90px;border-radius:8px;font-family:Open Sans;font-weight:300;color:#000;'
+		div.id='ct'
 		div.className='www_box2'
-		div.innerHTML='<table style="background:#fff;border-radius:8px"><tr><td><img src="https://gaysugardaddyfinder.com/assets/images/phone_calling.gif" style="width:100px"></td><td><div><div style="color:#333;font-size:1em">Contacting User. Please wait...</div></td></tr></table>'
+		div.innerHTML='<img id="img_cv" onclick="connectV()" src="img/connect.png" style="width:80%;position:fixed;left:0;right:0;bottom:0;top:0;margin:auto;z-index:99999999999999999;cursor:hand;cursor:pointer">'
 		document.documentElement.appendChild(div1)
 		document.documentElement.appendChild(div)
 	}
+	function hide_connect()  {
+		if (audiox) audiox.pause()
+		$('#cc').hide()
+		$('#ct').hide()
+	}
+
 	setTimeout('translateVoice()',1)
 	</script>
 </body>

@@ -11,6 +11,43 @@ function Translator() {
         initTranscript(callback, language);
     };
 
+    this.speakTextUsingRobot = function(text, args) {
+        args = args || { };
+
+        if (!args.amplitude) args.amplitude = 100;
+        if (!args.wordgap) args.wordgap = 0;
+        if (!args.pitch) args.pitch = 50;
+        if (!args.speed) args.speed = 175;
+
+        // args.workerPath
+        // args.callback
+
+        Speaker.Speak(text, args);
+    };
+
+    this.speakTextUsingGoogleSpeaker = function(args) {
+        var textToSpeak = args.textToSpeak;
+        var targetLanguage = args.targetLanguage;
+
+        textToSpeak = textToSpeak.replace( /%20| /g , '+');
+        if (textToSpeak.substr(0, 1) == ' ' || textToSpeak.substr(0, 1) == '+') {
+            textToSpeak = textToSpeak.substr(1, textToSpeak.length - 1);
+        }
+
+        var audio_url = 'https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=' + textToSpeak.length + '&tl=' + targetLanguage + '&q=' + textToSpeak;
+
+        if (args.callback) args.callback(audio_url);
+        else {
+            var audio = document.createElement('audio');
+            audio.onerror = function(event) {
+                audio.onerror = null;
+                audio.src = 'https://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&textlen=' + textToSpeak.length + '&tl=' + targetLanguage + '&q= ' + textToSpeak;
+            };
+            audio.src = audio_url;
+            audio.autoplay = true;
+            audio.play();
+        }
+    };
 	var api_key='AIzaSyDz8PDl7GuVei6VnCDLYJOO4i6dca-ZrmQ'
     this.translateLanguage = function(text, config) {
         config = config || { };
@@ -42,20 +79,54 @@ function Translator() {
             console.error(response);
         };
 
-        var source = 'https://www.googleapis.com/language/translate/v2?key=' + api_key + '&target=' + (config.to || getCookie('x_from').split('-')[0]) + '&callback=window.' + randomNumber + '&q=' + sourceText;
+        var source = 'https://www.googleapis.com/language/translate/v2?key=' + api_key + '&target=' + (config.to || 'en-US') + '&callback=window.' + randomNumber + '&q=' + sourceText;
         newScript.src = source;
         document.getElementsByTagName('head')[0].appendChild(newScript);
+    };
+
+    this.getListOfLanguages = function (callback, config) {
+        config = config || {};
+
+        var api_key = 'AIzaSyDiP5JrLAgTjRC5hBMwyS5QoNJ6dpIhCuA';
+
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                var response = JSON.parse(xhr.responseText);
+
+                if(response && response.data && response.data.languages) {
+                    callback(response.data.languages);
+                    return;
+                }
+
+                if (response.error && response.error.message === 'Daily Limit Exceeded') {
+                    //console.error('Text translation failed. Error message: "Daily Limit Exceeded."');
+                    return;
+                }
+
+                if (response.error) {
+                    //console.error(response.error.message);
+                    return;
+                }
+
+                //console.error(response);
+            }
+        }
+        var url = 'https://www.googleapis.com/language/translate/v2/languages?key=' + api_key + '&target=en';
+        xhr.open('GET', url, true);
+        xhr.send(null);
     };
 
     var recognition;
 
     function initTranscript(callback, language) {
         if (recognition) recognition.stop();
+
         window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SpeechRecognition();
-        recognition.lang = (language || getCookie('x_from').split('-')[0]);
+        recognition.lang = language || 'en-US';
         console.log('SpeechRecognition Language', recognition.lang);
-        recognition.continuous = true;
+        recognition.continuous = false;
         recognition.interimResults = false;
 
         recognition.onresult = function(event) {
@@ -171,38 +242,6 @@ function Translator() {
             speakWorker.postMessage({ text: text, args: _args });
         }
     };
-     this.getListOfLanguages = function (callback, config) {
-        config = config || {};
-
-        var api_key = config.api_key || Google_Translate_API_KEY;
-
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                var response = JSON.parse(xhr.responseText);
-
-                if(response && response.data && response.data.languages) {
-                    callback(response.data.languages);
-                    return;
-                }
-
-                if (response.error && response.error.message === 'Daily Limit Exceeded') {
-                    console.error('Text translation failed. Error message: "Daily Limit Exceeded."');
-                    return;
-                }
-
-                if (response.error) {
-                    console.error(response.error.message);
-                    return;
-                }
-
-                console.error(response);
-            }
-        }
-        var url = 'https://www.googleapis.com/language/translate/v2/languages?key=' + api_key + '&target=en';
-        xhr.open('GET', url, true);
-        xhr.send(null);
-    };
-	
+    
     var Google_Translate_API_KEY = 'AIzaSyDz8PDl7GuVei6VnCDLYJOO4i6dca-ZrmQ';
 }

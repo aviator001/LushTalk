@@ -307,10 +307,35 @@
 						});
 
 						return				
+				} else if (type=='NEW_CALL') {
+						notify_user(data.data)
+						fromUser=data.fromUser
+						$.confirm({
+							theme: 'modern',
+							title:'Imcoming Video call',
+							content: 'CALL FROM '+ data.fromUser.toUpperCase(),
+							buttons: {
+								Accept: {
+									text: 'Accept',
+									btnClass: 'btn-blue',
+									action: function(){
+										//SAME AS SMS URL
+										location.href=''
+									}
+								},
+								Reject: {
+									text: 'Reject',
+									btnClass: 'btn-red'
+								}
+							}
+						});
+
+						return				
 				} else if (type=='VT') {
 					if (last_msg !== data.msg) {
 						in_msg=data.msg.split('|')[0]
 						last_msg=in_msg
+						console.log('INCOMING: ' + incoming)
 						incoming(in_msg)
 					}
 				return				
@@ -421,14 +446,13 @@
 	var aid=guid()
 	//if (volumeControl) volumeControl.setVolume(0)
 	function incoming(txt) {
+		if ($$('inData').innerHTML.indexOf('STRONGLY RECOMMENDED')>0) $$('inData').innerHTML=''
 		setTimeout(function(){
 			txt2Vox(txt)
 		},1)
-		msgInTextQ.push(txt)
-		msgInAIDQ.push(aid)
+			msgInTextQ.push(txt)
+			msgInAIDQ.push(aid)
 		if ($$('inData').innerHTML.length>100) {
-			$$('inData').className='animated bounceOutRight'
-			$$('inData').className='animated bounceInLeft'
 			$$('inData').innerHTML=txt
 		} else {
 			$$('inData').innerHTML=$$('inData').innerHTML+txt+". "
@@ -437,9 +461,11 @@
 	}
 	var aid
 	var adata=[]
+	var txt1
+	var audio_file
 	function txt2Vox(txt1) {
 		var request = $.ajax({
-			url: 'https://lushtalk.com/audio/index.php?lang_text='+txt1+'&lang_code='+getCookie('x_from')+'&aid='+guid()+'&lang_name='+getCookie('x_from_lang'), 
+			url: 'https://lushtalk.com/audio/index.php?lang_text='+txt1+'&lang_code='+getCookie('x_from')+'&aid='+getCookie('login') + '-' + guid()+'&lang_name='+getCookie('x_from_lang'), 
 			type: "GET",
 			dataType: "html",
 			cache: false,
@@ -448,6 +474,7 @@
 				var audio=new Audio()
 				audio.src=adata.file
 				aid=adata.aid
+				audio_file='/media2/audio_file_store/' + aid + '.mp3'
 				//if (volumeControl) volumeControl.setVolume(1)
 				audio.play()
 				audio.onended = function() {
@@ -457,21 +484,15 @@
 					msgInTextQ.splice(ptr,1)
 					msgInAIDQ.splice(ptr,1)
 						request = $.ajax({
-						url: 'https://lushtalk.com/audio/clean.php?aid='+aid, 
+						url: 'https://lushtalk.com/audio/clean.php?aid='+aid+'&from='+getCookie('chatting_with_login')+'&to='+getCookie('login')+'&lang='+getCookie('x_from')+'&text='+txt1+'&translation='+audio_file, 
 						type: "GET",
 						dataType: "html",
-						cache: false,
-						success: function(msg) {
-							
-						}
+						cache: false
 					})
 				};
 			}
 		})
 	}
-	//$translate = new TranslateClient();
-	//$result = $translate->detectLanguage($text);
-	//print("Language code: $result[languageCode]\n");
 
 	var bg='lavenderblush'
 	function buildOnlineList(urs) {
@@ -784,7 +805,7 @@
 		}	
 		//Now, we generate a link to send to the user we want to invite - so that they can click this link and join the video call directly, without having to deal with any confirmations etc.
 		//We can bypass confirmations by setting the value of 'active' cookie to equal the login name of the member who they are inviting to the video call
-		location.href='channel.html?login='+getCookie('login')+'&action=1'
+		location.href='channel.html?channel='+getCookie('login')+'&action=1'
 	}			
 
 	function init_video() {
@@ -812,7 +833,7 @@
 		}	
 		//Now, we generate a link to send to the user we want to invite - so that they can click this link and join the video call directly, without having to deal with any confirmations etc.
 		//We can bypass confirmations by setting the value of 'active' cookie to equal the login name of the member who they are inviting to the video call
-		location.href='channel.html?login='+getCookie('login')+'&init=1'
+		location.href='channel.html?channel='+getCookie('login')+'&init=1'
 	}			
 			var myDropzone
 			Dropzone.autoDiscover=false
